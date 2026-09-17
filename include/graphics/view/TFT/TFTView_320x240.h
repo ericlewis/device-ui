@@ -282,3 +282,243 @@ class TFTView_320x240 : public MeshtasticView
     bool spacePending = false;
     uint32_t lastSpaceAt = 0;
     uint32_t lastSpaceCursor = 0;
+    void updateGroupChannel(uint8_t chId);
+
+    void backup(uint32_t option);
+    void restore(uint32_t option);
+
+    void scanSignal(uint32_t scanNo);
+    void handleTraceRouteResponse(const meshtastic_Routing &routing);
+    void addNodeToTraceRoute(uint32_t nodeNum, lv_obj_t *panel);
+    void purgeNode(uint32_t nodeNum);
+    void removeSpinner(void);
+    void packetDetected(const meshtastic_MeshPacket &p);
+    void writePacketLog(const meshtastic_MeshPacket &p);
+    void updateStatistics(const meshtastic_MeshPacket &p);
+    void updateSignalStrength(int32_t rssi, float snr);
+    int32_t signalStrength2Percent(int32_t rx_rssi, float rx_snr);
+
+    uint32_t preset2val(meshtastic_Config_LoRaConfig_ModemPreset preset);
+    meshtastic_Config_LoRaConfig_ModemPreset val2preset(uint32_t val);
+    uint32_t region2val(meshtastic_Config_LoRaConfig_RegionCode region);
+    meshtastic_Config_LoRaConfig_RegionCode val2region(uint32_t val);
+    uint32_t role2val(meshtastic_Config_DeviceConfig_Role role);
+    meshtastic_Config_DeviceConfig_Role val2role(uint32_t val);
+    uint32_t language2val(meshtastic_Language lang);
+    meshtastic_Language val2language(uint32_t val);
+    void setLocale(meshtastic_Language lang);
+    void setLanguage(meshtastic_Language lang);
+    void setTimeout(uint32_t timeout);
+    void setBrightness(uint32_t brightness);
+    void setTheme(uint32_t theme);
+    void storeNodeOptions(void);
+    void eraseChat(uint32_t channelOrNode);
+    void clearChatHistory(void);
+    void showLoRaFrequency(const meshtastic_Config_LoRaConfig &cfg);
+    void setBellText(bool banner, bool sound);
+    void setChannelName(const meshtastic_Channel &ch);
+    uint32_t timestamp(char *buf, uint32_t time, bool update);
+    void updateLocationMap(uint32_t objects);
+    void attribution(std::string url);
+
+    // response callbacks
+    void onTextMessageCallback(const ResponseHandler::Request &, ResponseHandler::EventType, int32_t);
+    void onPositionCallback(const ResponseHandler::Request &, ResponseHandler::EventType, int32_t);
+    void onTracerouteCallback(const ResponseHandler::Request &, ResponseHandler::EventType, int32_t);
+
+    // lvgl timer callbacks
+    static void timer_event_reboot(lv_timer_t *timer);
+    static void timer_event_shutdown(lv_timer_t *timer);
+    static void timer_event_programming_mode(lv_timer_t *timer);
+
+    // lvgl event callbacks
+    static void ui_event_LogoButton(lv_event_t *e);
+    static void ui_event_BluetoothButton(lv_event_t *e);
+
+    // static void ui_event_HomeButton(lv_event_t * e);
+    static void ui_event_NodesButton(lv_event_t *e);
+    static void ui_event_GroupsButton(lv_event_t *e);
+    static void ui_event_MessagesButton(lv_event_t *e);
+    static void ui_event_MapButton(lv_event_t *e);
+    static void ui_event_SettingsButton(lv_event_t *e);
+
+    static void ui_event_NodeButton(lv_event_t *e);
+    static void ui_event_ChannelButton(lv_event_t *e);
+    static void ui_event_ChatButton(lv_event_t *e);
+    static void ui_event_ChatDelButton(lv_event_t *e);
+    static void ui_event_MsgPopupButton(lv_event_t *e);
+    static void ui_event_MsgRestoreButton(lv_event_t *e);
+    static void ui_event_AlertButton(lv_event_t *e);
+
+    // Home screen
+    static void ui_event_EnvelopeButton(lv_event_t *e);
+    static void ui_event_OnlineNodesButton(lv_event_t *e);
+    static void ui_event_TimeButton(lv_event_t *e);
+    static void ui_event_LoRaButton(lv_event_t *e);
+    static void ui_event_BellButton(lv_event_t *e);
+    static void ui_event_LocationButton(lv_event_t *e);
+    static void ui_event_WLANButton(lv_event_t *e);
+    static void ui_event_MQTTButton(lv_event_t *e);
+    static void ui_event_SDCardButton(lv_event_t *e);
+    static void ui_event_MemoryButton(lv_event_t *e);
+    static void ui_event_QrButton(lv_event_t *e);
+    static void ui_event_CancelQrButton(lv_event_t *e);
+
+    // blank screen
+    static void ui_event_BlankScreenButton(lv_event_t *e);
+
+    static void ui_event_KeyboardButton(lv_event_t *e);
+    static void ui_event_Keyboard(lv_event_t *e);
+
+    static void ui_event_message_ready(lv_event_t *e);
+    static void ui_event_message_input(lv_event_t *e);
+
+    static void ui_event_user_button(lv_event_t *e);
+    static void ui_event_role_button(lv_event_t *e);
+    static void ui_event_region_button(lv_event_t *e);
+    static void ui_event_preset_button(lv_event_t *e);
+    static void ui_event_wifi_button(lv_event_t *e);
+    static void ui_event_language_button(lv_event_t *e);
+    static void ui_event_channel_button(lv_event_t *e);
+    static void ui_event_brightness_button(lv_event_t *e);
+    static void ui_event_theme_button(lv_event_t *e);
+    static void ui_event_calibration_button(lv_event_t *e);
+    static void ui_event_timeout_button(lv_event_t *e);
+    static void ui_event_screen_lock_button(lv_event_t *e);
+    static void ui_event_input_button(lv_event_t *e);
+    static void ui_event_alert_button(lv_event_t *e);
+    static void ui_event_backup_button(lv_event_t *e);
+    static void ui_event_reset_button(lv_event_t *e);
+    static void ui_event_reboot_button(lv_event_t *e);
+    static void ui_event_about_button(lv_event_t *e);
+    static void ui_event_device_reboot_button(lv_event_t *e);
+    static void ui_event_device_progmode_button(lv_event_t *e);
+    static void ui_event_device_shutdown_button(lv_event_t *e);
+    static void ui_event_device_cancel_button(lv_event_t *e);
+    static void ui_event_shutdown_button(lv_event_t *e);
+    static void ui_event_modify_channel(lv_event_t *e);
+    static void ui_event_delete_channel(lv_event_t *e);
+    static void ui_event_generate_psk(lv_event_t *e);
+    static void ui_event_qr_code(lv_event_t *e);
+
+    static void ui_event_screen_timeout_slider(lv_event_t *e);
+    static void ui_event_brightness_slider(lv_event_t *e);
+    static void ui_event_frequency_slot_slider(lv_event_t *e);
+    static void ui_event_modem_preset_dropdown(lv_event_t *e);
+    static void ui_event_setup_region_dropdown(lv_event_t *e);
+    static void ui_event_map_style_dropdown(lv_event_t *e);
+    static void ui_event_map_url_dropdown(lv_event_t *e);
+    static void ui_event_map_url_textarea(lv_event_t *e);
+
+    static void ui_event_calibration_screen_loaded(lv_event_t *e);
+
+    static void ui_event_mesh_detector(lv_event_t *e);
+    static void ui_event_mesh_detector_start(lv_event_t *e);
+    static void ui_event_signal_scanner(lv_event_t *e);
+    static void ui_event_signal_scanner_node(lv_event_t *e);
+    static void ui_event_signal_scanner_start(lv_event_t *e);
+    static void ui_event_trace_route(lv_event_t *e);
+    static void ui_event_trace_route_to(lv_event_t *e);
+    static void ui_event_trace_route_start(lv_event_t *e);
+    static void ui_event_trace_route_node(lv_event_t *e);
+    static void ui_event_node_details(lv_event_t *e);
+    static void ui_event_statistics(lv_event_t *e);
+    static void ui_event_packet_log(lv_event_t *e);
+
+    static void ui_event_pin_screen_button(lv_event_t *e);
+    static void ui_event_statistics_table(lv_event_t *e);
+
+    static void ui_event_ok(lv_event_t *e);
+    static void ui_event_cancel(lv_event_t *e);
+    static void ui_event_backup_restore_radio_button(lv_event_t *e);
+
+    // map navigation
+    static void ui_screen_event_cb(lv_event_t *e);
+    static void ui_event_arrow(lv_event_t *e);
+    static void ui_event_navHome(lv_event_t *e);
+    static void ui_event_zoomSlider(lv_event_t *e);
+    static void ui_event_zoomIn(lv_event_t *e);
+    static void ui_event_zoomOut(lv_event_t *e);
+    static void ui_event_lockGps(lv_event_t *e);
+    static void ui_event_mapBrightnessSlider(lv_event_t *e);
+    static void ui_event_mapContrastSlider(lv_event_t *e);
+    static void ui_event_mapNodeButton(lv_event_t *e);
+    static void ui_event_chatNodeButton(lv_event_t *e);
+    static void ui_event_positionButton(lv_event_t *e);
+
+    // animations
+    static void ui_anim_node_panel_cb(void *var, int32_t v);
+    static void ui_anim_radar_cb(void *var, int32_t r);
+
+    lv_obj_t *activeButton = nullptr;
+    lv_obj_t *activePanel = nullptr;
+    lv_obj_t *activeTopPanel = nullptr;
+    lv_obj_t *activeMsgContainer = nullptr;
+    lv_obj_t *activeWidget = nullptr;
+    lv_obj_t *activeTextInput = nullptr;
+    lv_group_t *input_group = nullptr;
+
+    enum BasicSettings activeSettings = eNone; // active settings menu (used to disable other button presses)
+
+    static TFTView_320x240 *gui;                     // singleton pattern
+    bool screensInitialised;                         // true if init_screens is completed
+    uint32_t nodesFiltered;                          // no. hidden nodes in node list
+    bool nodesChanged;                               // true if nodes changed (added or purged)
+    bool processingFilter;                           // indicates that filtering is ongoing
+    bool packetLogEnabled;                           // display received packets
+    bool detectorRunning;                            // meshDetector is active
+    bool cardDetected;                               // SD has been detected
+    bool formatSD;                                   // offer to format SD card
+    uint16_t buttonSize;                             // size of group/chat buttons in pixels
+    uint16_t statisticTableRows;                     // number of rows in statistics table
+    uint16_t packetCounter;                          // number of packets in packet log
+    time_t lastrun60, lastrun10, lastrun5, lastrun1; // timers for task loop
+    time_t actTime, uptime, lastHeard;               // actual time and uptime; time last heard a node
+    bool hasPosition;                                // if our position is known
+    int32_t myLatitude, myLongitude;                 // our current position as reported by firmware
+    void *topNodeLL;                                 // pointer to topmost button in group ll
+    uint32_t scans;                                  // scanner counter
+    lv_anim_t radar;                                 // radar animation
+    static uint32_t currentNode;                     // current selected node
+    static lv_obj_t *currentPanel;                   // current selected node panel
+    static lv_obj_t *spinnerButton;                  // start button animation
+    static time_t startTime;                         // time when start button was pressed
+    static uint32_t pinKeys;                         // number of keys pressed (lock screen)
+    static bool screenLocked;                        // screen lock active
+    static bool screenUnlockRequest;                 // screen unlock request (via button)
+    enum KbdSlide { eKbdHidden, eKbdSliding, eKbdShown };
+    static KbdSlide kbdSlideState;                        // slide state of the on-screen keyboard
+    static int32_t kbdPanelBaseY;                         // messages panel y at rest (INT32_MIN: not captured yet)
+    uint32_t selectedHops;                                // remember selected choice
+    bool chooseNodeSignalScanner;                         // chose a target node for signal scanner
+    bool chooseNodeTraceRoute;                            // chose a target node for trace route
+    char old_val1_scratch[64], old_val2_scratch[64];      // temporary scratch buffers for settings strings
+    std::array<lv_obj_t *, c_max_channels> ch_label;      // indexable label list for settings
+    meshtastic_Channel *channel_scratch;                  // temporary scratch copy of channel db
+    lv_obj_t *qr;                                         // qr code
+    MapPanel *map = nullptr;                              // map
+#if defined(T_LORA_PAGER)
+    void updatePagerMapStatus(void);
+    static void ui_event_PagerMapNotice(lv_event_t *e);
+    lv_obj_t *mapStatusNotice = nullptr;
+    bool mapNoticeOpensWifi = false;
+    uint32_t lastMapStatusMs = 0;
+    bool mapHasOfflineSource = false;
+    static void ui_event_PagerMapSource(lv_event_t *e);
+#endif
+    std::unordered_map<uint32_t, lv_obj_t *> nodeObjects; // nodeObjects displayed on map
+    // extended default device profile struct with additional required data
+    struct meshtastic_DeviceProfile_ext : meshtastic_DeviceProfile {
+        meshtastic_User user;
+        meshtastic_Channel channel[c_max_channels]; // storage of channel info
+        meshtastic_DeviceUIConfig uiConfig;         // storage of persistent UI data
+    };
+
+    // additional local ui data (non-persistent)
+    struct meshtastic_DeviceProfile_full : meshtastic_DeviceProfile_ext {
+        bool silent;                                        // sound silenced
+        meshtastic_DeviceConnectionStatus connectionStatus; // wifi/bluetooth/ethernet
+    };
+
+    meshtastic_DeviceProfile_full db{}; // full copy of the node's configuration db (except nodeinfos) plus ui data
+};
