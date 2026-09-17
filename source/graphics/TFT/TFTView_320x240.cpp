@@ -22,6 +22,7 @@
 #include "ui.h"
 #if defined(T_LORA_PAGER)
 #include "graphics/view/TFT/PagerLayout.h"
+#include "graphics/view/TFT/PagerHomeList.h"
 #endif
 #include "util/About.h"
 #include "util/FileLoader.h"
@@ -374,6 +375,9 @@ void TFTView_320x240::init_screens(void)
     state = MeshtasticView::eInitScreens;
     ui_init();
     apply_hotfix();
+#if defined(T_LORA_PAGER)
+    applyPagerHomeList();
+#endif
 
     activeMsgContainer = objects.messages_container;
     // setup the two channel label panels with arrays that allow indexing
