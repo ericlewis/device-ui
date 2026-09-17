@@ -242,10 +242,7 @@ class TFTView_320x240 : public MeshtasticView
     void disablePanel(lv_obj_t *panel);
     void setGroupFocus(lv_obj_t *panel);
     void setInputGroup(void);
-<<<<<<< HEAD
     void updateInputControls(void);
-=======
-    void setInputButtonLabel(void);
 #if defined(T_LORA_PAGER)
     void createPagerToggleSettings(void);
     void createPagerSettingsControls(void);
@@ -268,7 +265,6 @@ class TFTView_320x240 : public MeshtasticView
     lv_obj_t *settingsReturnRow = nullptr;
     bool pagerSettingsSidebarDisabled = false;
 #endif
->>>>>>> 017794c (feat(pager): share Home and Settings configuration dialogs)
     void updateGroupChannel(uint8_t chId);
 
     void backup(uint32_t option);
@@ -483,6 +479,11 @@ class TFTView_320x240 : public MeshtasticView
     meshtastic_Channel *channel_scratch;                  // temporary scratch copy of channel db
     lv_obj_t *qr;                                         // qr code
     MapPanel *map = nullptr;                              // map
+#if defined(T_LORA_PAGER)
+    lv_obj_t *mapSourceNotice = nullptr;
+    bool mapHasOfflineSource = false;
+    static void ui_event_PagerMapSource(lv_event_t *e);
+#endif
     std::unordered_map<uint32_t, lv_obj_t *> nodeObjects; // nodeObjects displayed on map
     // extended default device profile struct with additional required data
     struct meshtastic_DeviceProfile_ext : meshtastic_DeviceProfile {
