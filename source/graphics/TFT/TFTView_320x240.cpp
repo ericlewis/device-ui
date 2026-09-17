@@ -585,6 +585,7 @@ void TFTView_320x240::apply_hotfix(void)
 #if defined(T_LORA_PAGER)
     createPagerToggleSettings();
     createPagerSettingsControls();
+    applyPagerDialogFocus();
 #endif
 
 #if defined(T_LORA_PAGER)
