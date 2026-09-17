@@ -244,6 +244,7 @@ class TFTView_320x240 : public MeshtasticView
     void enablePanel(lv_obj_t *panel);
     void disablePanel(lv_obj_t *panel);
     void setGroupFocus(lv_obj_t *panel);
+    void focusMessageInput(void);
     void setInputGroup(void);
     void updateInputControls(void);
 #if defined(T_LORA_PAGER)
@@ -372,6 +373,7 @@ class TFTView_320x240 : public MeshtasticView
 
     static void ui_event_message_ready(lv_event_t *e);
     static void ui_event_message_input(lv_event_t *e);
+    static void ui_event_message_encoder(lv_event_t *e);
 
     static void ui_event_user_button(lv_event_t *e);
     static void ui_event_role_button(lv_event_t *e);
