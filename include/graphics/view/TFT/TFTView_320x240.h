@@ -245,6 +245,7 @@ class TFTView_320x240 : public MeshtasticView
     void disablePanel(lv_obj_t *panel);
     void setGroupFocus(lv_obj_t *panel);
     void focusMessageInput(void);
+    void layoutMessageBubble(lv_obj_t *label, const char *text);
     void setInputGroup(void);
     void updateInputControls(void);
 #if defined(T_LORA_PAGER)
